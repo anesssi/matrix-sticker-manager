@@ -23,5 +23,10 @@ media:
   # Requires turt2live/matrix-media-repo
   useMediaInfo: false
 
+  # Does not ask for sticker description
+  # Instead, automatically use file name as description
+  # Will convert "_" to " "
+  useFileNameAsDescription: false
+
 # Where to store misc files
 dataPath: "/etc/stickerbot/data"

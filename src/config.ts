@@ -15,6 +15,7 @@ interface IConfig {
     media: {
         useLocalCopy: boolean;
         useMediaInfo: boolean;
+        useFileNameAsDescription: boolean;
     };
     dataPath: string;
 }

@@ -94,12 +94,28 @@ export class GatherStickersStage implements StickerPackBuilder {
             }
         }
 
+        let stickerDescription = "";
+        if (config.media.useFileNameAsDescription) {
+            // File name will be set as sticker description
+            stickerDescription = event['content']['body'];
+            stickerDescription = stickerDescription.substring(0, stickerDescription.lastIndexOf("."));
+            stickerDescription = stickerDescription.replace("_", " ");
+        }
+
         this.currentSticker = {
-            description: "",
+            description: stickerDescription,
             contentUri: contentUri,
         };
-        this.expectingImage = false;
-        LogService.info("GatherStickersStage", "Asking for a description for the uploaded image in " + this.roomId);
-        return this.client.sendNotice(this.roomId, "Great! In a few words, please describe your sticker.");
+        
+        if (!config.media.useFileNameAsDescription) {
+            this.expectingImage = false;
+            LogService.info("GatherStickersStage", "Asking for a description for the uploaded image in " + this.roomId);
+            return this.client.sendNotice(this.roomId, "Great! In a few words, please describe your sticker.");
+        }
+
+        // if file name is used as description, the next sticker can be sent
+        this.stickers.push(this.currentSticker);
+        LogService.info("GatherStickersStage", "A sticker has been completed, but not submitted in " + this.roomId);
+        return this.client.sendNotice(this.roomId, "Thanks! Send me another 512x512 PNG for your next sticker or say !done if you've finished.");
     }
 }
