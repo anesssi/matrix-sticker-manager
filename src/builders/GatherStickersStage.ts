@@ -99,7 +99,7 @@ export class GatherStickersStage implements StickerPackBuilder {
             // File name will be set as sticker description
             stickerDescription = event['content']['body'];
             stickerDescription = stickerDescription.substring(0, stickerDescription.lastIndexOf("."));
-            stickerDescription = stickerDescription.replace("_", " ");
+            stickerDescription = stickerDescription.replace(/_/g, " ");
         }
 
         this.currentSticker = {
